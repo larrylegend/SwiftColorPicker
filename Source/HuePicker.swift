@@ -35,8 +35,7 @@ public class HuePicker: UIView {
         self.h = h
     }
     
-
-    public required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         userInteractionEnabled = true
     }
@@ -47,8 +46,8 @@ public class HuePicker: UIView {
             return
         }
         
-        let width = UInt(bounds.width)
-        let height = UInt(bounds.height)
+        var width = UInt(bounds.width)
+        var height = UInt(bounds.height)
         
         if  data == nil {
             data = [UInt8](count: Int(width * height) * 4, repeatedValue: UInt8(255))
@@ -59,22 +58,22 @@ public class HuePicker: UIView {
         var t = 0.0
 
         var i = 0
-        //_ = 255
+        var a:UInt8 = 255
         var double_v:Double = 0
         var double_s:Double = 0
-        let widthRatio:Double = 360 / Double(bounds.width)
+        var widthRatio:Double = 360 / Double(bounds.width)
         var d = data!
         for hi in 0..<Int(bounds.width) {
-            let double_h:Double = widthRatio * Double(hi) / 60
-            let sector:Int = Int(floor(double_h))
-            let f:Double = double_h - Double(sector)
-            let f1:Double = 1.0 - f
+            var double_h:Double = widthRatio * Double(hi) / 60
+            var sector:Int = Int(floor(double_h))
+            var f:Double = double_h - Double(sector)
+            var f1:Double = 1.0 - f
             double_v = Double(1)
             double_s = Double(1)
             p = double_v * (1.0 - double_s) * 255
             q = double_v * (1.0 - double_s * f) * 255
             t = double_v * ( 1.0 - double_s  * f1) * 255
-            let v255 = double_v * 255
+            var v255 = double_v * 255
             i = hi * 4
             switch(sector) {
             case 0:
@@ -117,8 +116,8 @@ public class HuePicker: UIView {
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
 
         let provider = CGDataProviderCreateWithCFData(NSData(bytes: &d, length: d.count * sizeof(UInt8)))
-        let cgimg = CGImageCreate(Int(width), Int(height), 8, 32, Int(width) * Int(sizeof(UInt8) * 4),
-            colorSpace, bitmapInfo, provider, nil, true, CGColorRenderingIntent.RenderingIntentDefault)
+        var cgimg = CGImageCreate(Int(width), Int(height), 8, 32, Int(width) * Int(sizeof(UInt8) * 4),
+            colorSpace, bitmapInfo, provider, nil, true, .RenderingIntentDefault)
         
         
         image = UIImage(CGImage: cgimg!)
@@ -135,17 +134,22 @@ public class HuePicker: UIView {
     }
     
     override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        handleTouch(touches.first! as UITouch, finished: false)
+        if let touch = touches.first {
+            handleTouch(touch, finished: false)
+        }
     }
     
     override public func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        handleTouch(touches.first! as UITouch, finished: false)
+        if let touch = touches.first {
+            handleTouch(touch, finished: false)
+        }
     }
     
     override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        handleTouch(touches.first! as UITouch, finished: true)
+        if let touch = touches.first {
+            handleTouch(touch, finished: false)
+        }
     }
-    
     
     override public func drawRect(rect: CGRect) {
         if image == nil {
@@ -161,7 +165,7 @@ public class HuePicker: UIView {
     func drawHueDragHandler(frame frame: CGRect) {
         
         //// Polygon Drawing
-        let polygonPath = UIBezierPath()
+        var polygonPath = UIBezierPath()
         polygonPath.moveToPoint(CGPointMake(frame.minX + 4, frame.maxY - 6))
         polygonPath.addLineToPoint(CGPointMake(frame.minX + 7.46, frame.maxY))
         polygonPath.addLineToPoint(CGPointMake(frame.minX + 0.54, frame.maxY))
@@ -171,7 +175,7 @@ public class HuePicker: UIView {
         
         
         //// Polygon 2 Drawing
-        let polygon2Path = UIBezierPath()
+        var polygon2Path = UIBezierPath()
         polygon2Path.moveToPoint(CGPointMake(frame.minX + 4, frame.minY + 6))
         polygon2Path.addLineToPoint(CGPointMake(frame.minX + 7.46, frame.minY))
         polygon2Path.addLineToPoint(CGPointMake(frame.minX + 0.54, frame.minY))

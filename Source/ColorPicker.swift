@@ -81,14 +81,14 @@ public class ColorPicker: UIView {
     func commonInit() {
         userInteractionEnabled = true
         clipsToBounds = false
-        self.addObserver(self, forKeyPath: "bounds", options: [NSKeyValueObservingOptions.New, NSKeyValueObservingOptions.Initial], context: nil)
+        self.addObserver(self, forKeyPath: "bounds", options: [.New, .Initial], context: nil)
     }
     
     deinit {
         self.removeObserver(self, forKeyPath: "bounds")
     }
 
-    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "bounds" {
             if let pImage1 = pickerImage1 {
                 pImage1.changeSize(Int(self.bounds.width), height: Int(self.bounds.height))
@@ -103,19 +103,22 @@ public class ColorPicker: UIView {
         }
     }
     
-    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first! as UITouch
-        handleTouche(touch, ended: false)
+    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
+            handleTouche(touch, ended: false)
+        }
     }
     
-    public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first! as UITouch
-        handleTouche(touch, ended: false)
+    override public func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
+            handleTouche(touch, ended: false)
+        }
     }
     
-    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first! as UITouch
-        handleTouche(touch, ended: true)
+    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if let touch = touches.first {
+            handleTouche(touch, ended: false)
+        }
     }
     
     private func handleColorChange(color:UIColor, changing:Bool) {
@@ -192,13 +195,13 @@ public class ColorPicker: UIView {
         }
         
         //// Oval Drawing
-        let ovalPath = UIBezierPath(ovalInRect: CGRectMake(currentPoint.x - 5, currentPoint.y - 5, 10, 10))
+        var ovalPath = UIBezierPath(ovalInRect: CGRectMake(currentPoint.x - 5, currentPoint.y - 5, 10, 10))
         UIColor.whiteColor().setStroke()
         ovalPath.lineWidth = 1
         ovalPath.stroke()
         
         //// Oval 2 Drawing
-        let oval2Path = UIBezierPath(ovalInRect: CGRectMake(currentPoint.x - 4, currentPoint.y - 4, 8, 8))
+        var oval2Path = UIBezierPath(ovalInRect: CGRectMake(currentPoint.x - 4, currentPoint.y - 4, 8, 8))
         UIColor.blackColor().setStroke()
         oval2Path.lineWidth = 1
         oval2Path.stroke()

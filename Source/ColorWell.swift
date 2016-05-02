@@ -44,20 +44,20 @@ import UIKit
         commonInit()
     }
     
-    public required init?(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         commonInit()
     }
 
     override public func drawRect(rect: CGRect) {
-        let ovalPath = UIBezierPath(ovalInRect: CGRectMake(5.5, 5.5, 35, 35))
+        var ovalPath = UIBezierPath(ovalInRect: CGRectMake(5.5, 5.5, 35, 35))
         color.setFill()
         ovalPath.fill()
 
         
         if let col = previewColor {
-            let ovalRect = CGRectMake(5.5, 5.5, 35, 35)
-            let ovalPath = UIBezierPath()
+            var ovalRect = CGRectMake(5.5, 5.5, 35, 35)
+            var ovalPath = UIBezierPath()
             ovalPath.addArcWithCenter(CGPointMake(ovalRect.midX, ovalRect.midY), radius: ovalRect.width / 2, startAngle: -90 * CGFloat(M_PI)/180, endAngle: 90 * CGFloat(M_PI)/180, clockwise: true)
             ovalPath.addLineToPoint(CGPointMake(ovalRect.midX, ovalRect.midY))
             ovalPath.closePath()
