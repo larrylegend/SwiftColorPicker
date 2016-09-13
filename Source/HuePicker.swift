@@ -117,7 +117,7 @@ public class HuePicker: UIView {
 
         let provider = CGDataProviderCreateWithCFData(NSData(bytes: &d, length: d.count * sizeof(UInt8)))
         var cgimg = CGImageCreate(Int(width), Int(height), 8, 32, Int(width) * Int(sizeof(UInt8) * 4),
-            colorSpace, bitmapInfo, provider, nil, true, .RenderingIntentDefault)
+            colorSpace, bitmapInfo, provider!, nil, true, .RenderingIntentDefault)
         
         
         image = UIImage(CGImage: cgimg!)
